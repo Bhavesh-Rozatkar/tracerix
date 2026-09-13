@@ -1,9 +1,9 @@
-import { APP_VERSION } from '../core/constants.js';
-import { clone, downloadBlob, today, parseNumber } from '../core/utils.js';
-import { seal, unseal } from '../security/crypto.js';
-import { normalizeState } from '../state/model.js';
-import { getSession } from '../state/session.js';
-import { saveState } from '../state/persistence.js';
+import { APP_VERSION } from '../../core/constants.js';
+import { clone, downloadBlob, today, parseNumber } from '../../core/utils.js';
+import { seal, unseal } from '../../security/crypto.js';
+import { normalizeState } from '../../state/model.js';
+import { getSession } from '../../state/session.js';
+import { saveState } from '../../state/persistence.js';
 
 export function validatePayload(payload) {
   if (!payload || typeof payload !== 'object') throw new Error('Invalid data.');

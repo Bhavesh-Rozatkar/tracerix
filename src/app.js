@@ -59,6 +59,8 @@ function updateFeature(element) {
   else if (feature === 'negative-habits') NegativeHabits.update(element, session.state, date);
   else return;
   scheduleSave(); touch();
+  // Goal values drive the progress bar and percentage, so redraw after a change.
+  if (feature === 'finite-goals') render();
 }
 
 async function saveEditor(data) {

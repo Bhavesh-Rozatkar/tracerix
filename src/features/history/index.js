@@ -1,9 +1,10 @@
 import { esc, dateFromKey, dateKey } from '../../core/utils.js';
-import { activeItems, getRecord } from '../../state/model.js';
+import { getRecord } from '../../state/model.js';
 
 export function view(state) {
-  const habits = activeItems(state, 'habit');
-  return `<section class="section"><div class="history-head"><strong>Habit history</strong>${habits.length ? `<select id="histItem">${habits.map(i => `<option value="${i.id}">${esc(i.name)}</option>`).join('')}</select><select id="histMode"><option value="week">Week</option><option value="month">Month</option></select>` : '<span class="muted">Add a habit in Manage to view history.</span>'}</div><div class="section-body" id="histBody"></div></section>`;
+  // Archived items remain selectable here so removing an item never hides its history.
+  const habits = state.config.items.filter(item => item.type === 'habit');
+  return `<section class="section"><div class="history-head"><strong>Habit history</strong>${habits.length ? `<select id="histItem">${habits.map(i => `<option value="${esc(i.id)}">${esc(i.name)}${i.archived ? ' (archived)' : ''}</option>`).join('')}</select><select id="histMode"><option value="week">Week</option><option value="month">Month</option></select>` : '<span class="muted">Add a habit in Manage to view history.</span>'}</div><div class="section-body" id="histBody"></div></section>`;
 }
 
 export function renderBody(state) {

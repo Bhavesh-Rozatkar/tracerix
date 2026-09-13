@@ -8,7 +8,7 @@ export function view(date, state) {
     const current = clamp(parseNumber(item.current, 0), 0, item.total);
     const percent = Math.round(current / item.total * 100);
     const complete = current >= item.total;
-    return `<div class="goal-block"><div class="row"><div><div class="item-name">${esc(item.name)}</div><div class="muted">${current} / ${item.total} ${esc(item.unit)}</div></div><div class="control"><input class="number" type="number" min="0" max="${item.total}" step="1" value="${current}" data-feature="finite-goals" data-field="current" data-id="${item.id}"><span class="pct">${percent}%</span></div></div><div class="progress"><i style="width:${percent}%"></i></div>${complete ? '<div class="muted goal-complete">Complete</div>' : ''}</div>`;
+    return `<div class="goal-block"><div class="row"><div><div class="item-name">${esc(item.name)}</div><div class="muted">${current} / ${item.total} ${esc(item.unit)}</div></div><div class="control"><input class="number" type="number" min="0" max="${item.total}" step="1" value="${current}" data-feature="finite-goals" data-field="current" data-id="${esc(item.id)}"><span class="pct">${percent}%</span></div></div><div class="progress"><i style="width:${percent}%"></i></div>${complete ? '<div class="muted goal-complete">Complete</div>' : ''}</div>`;
   }).join('');
   return `<section class="section"><h2>Finite Goals</h2><div class="section-body">${rows || '<div class="empty">Nothing here yet.</div>'}</div></section>`;
 }
