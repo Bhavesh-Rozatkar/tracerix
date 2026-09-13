@@ -17,11 +17,11 @@ It should include:
 - Notes
 - Relevant application configuration
 
-The resulting vault file is encrypted.
+By default, the resulting `.vault` file is encrypted. The export-format selector can instead create a plain-text `.json` file when portability or inspection is needed. Plain-text exports contain readable personal data and should only be used and stored deliberately.
 
 ## Records Export
 
-Records Export is intended for historical record portability. It contains recorded dates and activity without necessarily carrying the complete tracker configuration.
+Records Export is intended for historical record portability. It contains recorded dates and activity without necessarily carrying the complete tracker configuration. It uses the selected export format.
 
 ## Import safety
 
@@ -52,5 +52,5 @@ This prevents malformed or incorrect backups from partially overwriting an exist
 - Export backups regularly.
 - Keep more than one backup copy when the data is important.
 - Store backups somewhere separate from the device running Tracerix.
-- Never commit personal `.vault` files to GitHub.
+- Never commit personal `.vault` or `.json` export files to GitHub.
 - Keep the backup passphrase safe and separate from the backup file.

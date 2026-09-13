@@ -85,8 +85,9 @@ function bind() {
   $$('[data-edit]').forEach(b => b.onclick = () => openEditor({ item: findItem(getSession().state, b.dataset.edit), onSave: saveEditor }));
   $$('[data-archive]').forEach(b => b.onclick = async () => { const item = findItem(getSession().state, b.dataset.archive); if (!item) return; item.archived = true; await saveState(); render(); });
   $('[data-action="lock"]')?.addEventListener('click', lock);
-  $('[data-action="fullExport"]')?.addEventListener('click', () => exportVault(false).catch(() => alert('Export failed. Please try again.')));
-  $('[data-action="recordsExport"]')?.addEventListener('click', () => exportVault(true).catch(() => alert('Export failed. Please try again.')));
+  const exportEncrypted = () => $('#exportFormat')?.value !== 'plain';
+  $('[data-action="fullExport"]')?.addEventListener('click', () => exportVault(false, exportEncrypted()).catch(() => alert('Export failed. Please try again.')));
+  $('[data-action="recordsExport"]')?.addEventListener('click', () => exportVault(true, exportEncrypted()).catch(() => alert('Export failed. Please try again.')));
   $('#import')?.addEventListener('change', async e => { const file = e.target.files?.[0]; if (!file) return; try { if (await importFile(file)) render(); } catch { alert('Import failed: invalid, corrupted, incompatible, or incorrectly encrypted file.'); } finally { e.target.value = ''; } });
   $('#lockMin')?.addEventListener('change', async e => { const s = getSession(); s.state.config.lockMinutes = Math.max(1, parseNumber(e.target.value, 15)); await saveState(); touch(); });
   $('#histItem')?.addEventListener('change', () => History.renderBody(getSession().state));

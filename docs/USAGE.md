@@ -46,7 +46,7 @@ Use **Full Backup** when you want a restorable copy of the complete vault config
 
 Use **Records Export** when you primarily need a copy of historical records.
 
-Keep exported encrypted files somewhere safe. A backup without the correct passphrase may not be usable.
+Choose **Encrypted vault** (the default) to protect exported data with your passphrase. Choose **Plain-text JSON** only when you need a readable file; anyone with that file can read its contents. Keep exports somewhere safe.
 
 ## 6. Import
 

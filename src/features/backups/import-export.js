@@ -43,19 +43,23 @@ function convertRecords(rows) {
   }
   return out;
 }
-export async function exportVault(recordsOnly) {
+export async function exportVault(recordsOnly, encrypted = true) {
   const session = getSession();
   const payload = recordsOnly
     ? { version: APP_VERSION, type: 'records', exportedAt: new Date().toISOString(), records: clone(session.state.records) }
     : { version: APP_VERSION, type: 'full', exportedAt: new Date().toISOString(), config: clone(session.state.config), records: clone(session.state.records) };
-  const encrypted = await seal(payload, session.passphrase);
-  downloadBlob(new Blob([JSON.stringify(encrypted)], { type: 'application/octet-stream' }), `tracerix-${recordsOnly ? 'records' : 'full-backup'}-${today()}.vault`);
+  const content = encrypted ? await seal(payload, session.passphrase) : { format: 'tracerix-plain', ...payload };
+  const kind = recordsOnly ? 'records' : 'full-backup';
+  const extension = encrypted ? 'vault' : 'json';
+  const mimeType = encrypted ? 'application/octet-stream' : 'application/json';
+  downloadBlob(new Blob([JSON.stringify(content, null, encrypted ? 0 : 2)], { type: mimeType }), `tracerix-${kind}-${today()}.${extension}`);
 }
 export async function importFile(file) {
   const session = getSession();
   const raw = JSON.parse(await file.text());
   let imported;
   if (raw.format === 'tracerix-vault') imported = await unseal(raw, session.passphrase);
+  else if (raw.format === 'tracerix-plain') imported = raw;
   else if (raw.format === 'tracerix' && raw.version) imported = convertTemplate(raw);
   else throw new Error('Unsupported file.');
   validatePayload(imported);
